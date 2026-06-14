@@ -1,0 +1,23 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps {
+        echo "Checking out code"
+        checkout scm
+      }
+    }
+    stage('Build') {
+      steps {
+        echo "Building Docker image"
+        sh 'docker build -t flask-app-dev .'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo "Deploying to Minikube"
+        sh 'kubectl apply -f deployment.yaml'
+      }
+    }
+  }
+}
